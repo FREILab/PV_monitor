@@ -5,28 +5,25 @@
 
 #include "Shelly.h" // Shelly Klasse
 
-
-
-const char* ssid = "xxx"; // Your network name
-const char* password = "xxx"; // Your network password
+// include private credentials
+#include "private.h"
 
 
 const char* shellyURL = "/rpc/Switch.GetStatus?id=0";
 char shelly1_url[100];
 
-const char* id1 = "10.30.0.144";
-
+// create Shelly object
 Shelly shelly1(1, shelly1_url);
-
 
 int pwmPin = D1;  // z. B. LED oder Motor
 int ledPin = D4;
 
-
+// Power variables
 float cur_power = 0; // Current power
 float cur_power_percent = 0; // Current power in percent of max power
 const float max_power = 2000.0; // Maximum expected power for scaling
 
+// Sleep time configuration
 const int SLEEP_START_HOUR = 22; // Stunde, ab der geschlafen wird
 const int SLEEP_END_HOUR = 6;   // Stunde, bis zu der geschlafen wird
 
@@ -57,6 +54,7 @@ void checkSleepTime() {
     Serial.print(sleepSeconds);
     Serial.println(" seconds until 6 AM.");
     WiFi.disconnect(); // WiFi abschalten, um Strom zu sparen
+    // sleep for calculated seconds
     ESP.deepSleep(sleepSeconds * 1000000LL);
   }
 }
@@ -102,17 +100,14 @@ void setup() {
 
   shelly1.setUrl(shelly1_url);
 
-
   //setup power meter
   pinMode(pwmPin, OUTPUT);
+  analogWrite(pwmPin, 0); // Start mit 0 PWM
 
-  
   //setup blinky LED
   pinMode(ledPin,OUTPUT);
   digitalWrite(ledPin, HIGH);
   ledState = true;
-
-  
 
 }
 
