@@ -8,7 +8,6 @@
 // include private credentials
 #include "private.h"
 
-
 const char* shellyURL = "/rpc/Switch.GetStatus?id=0";
 char shelly1_url[100];
 
