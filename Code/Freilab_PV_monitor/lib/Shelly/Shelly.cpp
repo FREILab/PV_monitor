@@ -1,16 +1,21 @@
+// Shelly.cpp for ESP8266
+// Fetches power and energy data from a Shelly device via HTTP API
+
 #include "Shelly.h"
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
-//#include <HTTPClient.h>
 #include <ArduinoJson.h>
 #include "utilities.h"
 
+// Constructor
 Shelly::Shelly(int id, const String& url) : id(id), url(url), power(0), total_energy(0), total_energy_today(0), timestring("") {}
 
+// Set URL for Shelly device
 void Shelly::setUrl(const String& url) {
     this->url = url;
 }
 
+// Fetch data from Shelly device
 void Shelly::fetchData() {
 
     WiFiClient client;
@@ -45,13 +50,9 @@ void Shelly::fetchData() {
             // Minuten-Timestamp holen
             unsigned long minute_ts = doc["aenergy"]["minute_ts"] | 0;
 
-            //Serial.print("Start-Minuten-Timestamp: ");
-            //Serial.println(minute_ts);
-
             Serial.print("Power:");
             Serial1.println(this->power);
             // Minuten-Timestamp in Zeit umwandeln
-            
             convertTimestampToTime(minute_ts, timestring);
             Serial.print("Start-Minuten-Timestamp in Zeit: ");
             Serial.println(timestring);
@@ -66,6 +67,7 @@ void Shelly::fetchData() {
     http.end();
 }
 
+// Calculate energy based on reference values
 void Shelly::calculateEnergy(float reference_energy_today, float reference_energy_total) {
     // Berechne die Energie basierend auf den Referenzwerten
     if (reference_energy_today >= 0 && reference_energy_total >= 0 && all_time_energy >= 0) {
@@ -78,22 +80,28 @@ void Shelly::calculateEnergy(float reference_energy_today, float reference_energ
     }
 }
 
+// Getter-Methoden
+// Get current power
 float Shelly::getPower() const {
   return power;
 }
 
+// Get all-time energy
 float Shelly::getAllTimeEnergy() const {
   return all_time_energy;
 }
 
+// Get total energy
 float Shelly::getTotalEnergy() const {
   return total_energy;
 }
 
+// Get today's energy
 float Shelly::getTodayEnergy() const {
   return total_energy_today;
 }
 
+// Get timestring
 const char* Shelly::getTimestring() const {
   return timestring;
 }

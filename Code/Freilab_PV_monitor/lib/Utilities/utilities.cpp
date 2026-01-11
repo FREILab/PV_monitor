@@ -1,8 +1,12 @@
+// utilities.cpp
+// Hilfsfunktionen für Zeitumwandlung und Energieberechnung
+
 #include "Arduino.h"
 #include "utilities.h"
 #include <time.h>
 #include <string.h>
 
+// Konvertiert einen Unix-Timestamp in einen lesbaren Zeitstring
 void convertTimestampToTime(unsigned long timestamp, char *time_str) 
  {
     // Shelly liefert Unix-Timestamp in Sekunden
@@ -20,6 +24,7 @@ void convertTimestampToTime(unsigned long timestamp, char *time_str)
     Serial.println(time_str);
 }
 
+// Berechnet die Energie basierend auf dem Gesamtenergiezähler und einem Referenzwert
 void calculate_energy(float &energy, float total_energy, float energy_1_ref)
 {
     if (energy_1_ref >= 0) {
@@ -29,6 +34,7 @@ void calculate_energy(float &energy, float total_energy, float energy_1_ref)
     }
 }
 
+// Prüft, ob ein neuer Tag begonnen hat basierend auf den Zeitstrings
 bool new_day_detected(const char* nvs_timestamp, const char* shelly_timestamp)
 {
     return strncmp(nvs_timestamp, shelly_timestamp, 13) != 0;

@@ -1,6 +1,7 @@
 #include <Arduino.h>
 
-
+// Shelly.h
+// Definition der Shelly-Klasse zur Kommunikation mit Shelly-Geräten
 class Shelly {
   public:
     Shelly(int id, const String& url);

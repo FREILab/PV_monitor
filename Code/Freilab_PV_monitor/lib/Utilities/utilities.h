@@ -1,4 +1,10 @@
 
+// utilities.h
+// Deklaration von Hilfsfunktionen für Zeitumwandlung und Energieberechnung
+
+
+#pragma once
+// Inkludiere notwendige Header
 
 void calculate_energy(float &energy, float total_energy, float energy_1_ref);
 
